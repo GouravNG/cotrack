@@ -1,7 +1,8 @@
 import requests  # for the url request
+import datetime
 update_id=25538692 #main update id
 
-def data_fetcher(pincode, date, n_date, nn_date):
+def data_fetcher(pincode, date, n_date, nn_date): #this function fetches the vaccine data
     url = f'https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode={pincode}&date={date}'
     print(url)  # remove this
     data = requests.get(url)
@@ -23,7 +24,15 @@ def data_fetcher(pincode, date, n_date, nn_date):
         else:
             print('RIGHT NOW NO CENTERS ARE AVAILABLE TO SHOW')
 
-def telegram_recieve():
+def date_converter(unix_tf): # this function convert the unix time format to normal date format
+    timestamp = datetime.date.fromtimestamp(unix_tf)
+    date = (timestamp.strftime('%d-%m-%Y'))
+    t_date = date
+    n_date = str(int(date[0:2]) + 1) + t_date[2:]
+    nn_date = str(int(date[0:2]) + 2) + t_date[2:]
+    return t_date,n_date,nn_date
+
+def telegram_recieve(): #this is to receive data from the telegam end
     global update_id
     timeout=100
     url=f'https://api.telegram.org/bot1644992322:AAEyVpjqwDRY46RniG9degjeoEn5H45y_8Y/getupdates?offset={update_id}&timeout={timeout}'
@@ -37,15 +46,13 @@ def telegram_recieve():
             chat_id = (nums['message']['from']['id'])
             update_id = (nums['update_id'])
             update_id +=1
-            return msg,unix_tf,chat_id,update_id
+            t_date,n_date,nn_date=date_converter(unix_tf)
+            return msg,chat_id,update_id,t_date,n_date,nn_date
         
     else:
         print('Problem from telelgram api')
 
-pincode = 574201
-date = '27-06-2021'
-n_date = '28-06-2021'
-nn_date = '29-06-2021'
+
 # data_fetcher(pincode, date, n_date, nn_date)
-msg,unix_tf,chat_id,update_id= telegram_recieve()
-print(msg,unix_tf,chat_id,update_id)
+msg,chat_id,update_id,t_date,n_date,nn_date= telegram_recieve()
+print(msg,chat_id,update_id,t_date,n_date,nn_date)
