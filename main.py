@@ -1,6 +1,6 @@
 import requests  # for the url request
 import datetime
-update_id=25538704 #main update id
+update_id=25538713 #main update id (remove from comment if not going to run from server)
 
 def telegram_send(reply_msg,chat_id):
     url=f'https://api.telegram.org/bot1644992322:AAEyVpjqwDRY46RniG9degjeoEn5H45y_8Y/sendMessage?text="{reply_msg}"&chat_id={chat_id}'
@@ -56,17 +56,19 @@ def telegram_recieve(): #this is to receive data from the telegam end
     else:
         print('Problem from telelgram api')
 
-
-pincode,chat_id,update_id,t_date,n_date,nn_date= telegram_recieve()
-try:
-    i_pincode=int(pincode)
-    if(len(pincode)==6):
-        print('pass1')
-        data_fetcher(pincode,t_date,n_date,nn_date,chat_id)
-    else:
-        print('pass2')
-        error_msg='Invalid input'
+#----------------------------MAIN FUNCTION---------------------------------------------------------
+while(True):
+    pincode,chat_id,update_id,t_date,n_date,nn_date= telegram_recieve()
+    try:
+        i_pincode=int(pincode)
+        if(len(pincode)==6):
+            print('pass1')
+            data_fetcher(pincode,t_date,n_date,nn_date,chat_id)
+        else:
+            print('pass2')
+            error_msg='Invalid input'
+            telegram_send(error_msg,chat_id)
+    except:
+        error_msg='Invalid Input'
         telegram_send(error_msg,chat_id)
-except:
-    error_msg='Invalid Input'
-    telegram_send(error_msg,chat_id)
+
