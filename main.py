@@ -3,7 +3,7 @@ import datetime
 update_id=25538713 #main update id (remove from comment if not going to run from server)
 
 def telegram_send(reply_msg,chat_id):
-    url=f'https://api.telegram.org/bot1644992322:AAEyVpjqwDRY46RniG9degjeoEn5H45y_8Y/sendMessage?text="{reply_msg}"&chat_id={chat_id}'
+    url=f'https://api.telegram.org/bot<token>/sendMessage?text="{reply_msg}"&chat_id={chat_id}'
     requests.post(url)
 
 def data_fetcher(pincode, t_date, n_date, nn_date,chat_id): #this function fetches the vaccine data
