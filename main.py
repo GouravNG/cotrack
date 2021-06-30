@@ -11,7 +11,7 @@ def dateadder(begin_date):
     return (day+month+year)
 
 def telegram_send(reply_msg,chat_id):
-    url=f'https://api.telegram.org/bot1644992322:AAFkPe1Cp7r4d0tGDSjNs5UWCXEhzuFlJOM/sendMessage?text="{reply_msg}"&chat_id={chat_id}'
+    url=f'https://api.telegram.org/bot<token>/sendMessage?text="{reply_msg}"&chat_id={chat_id}'
     requests.post(url)
 
 def data_fetcher(pincode, t_date, n_date, nn_date,chat_id): #this function fetches the vaccine data
@@ -46,7 +46,7 @@ def date_converter(unix_tf): # this function convert the unix time format to nor
 def telegram_recieve(): #this is to receive data from the telegam end
     global update_id
     timeout=100
-    url=f'https://api.telegram.org/bot1644992322:AAFkPe1Cp7r4d0tGDSjNs5UWCXEhzuFlJOM/getupdates?offset={update_id}&timeout={timeout}'
+    url=f'https://api.telegram.org/bot<token>/getupdates?offset={update_id}&timeout={timeout}'
     recieved_msg=requests.get(url)
     if recieved_msg.status_code==200:
         data=recieved_msg.json()['result']
