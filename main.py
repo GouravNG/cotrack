@@ -39,7 +39,7 @@ def date_converter(unix_tf): # this function convert the unix time format to nor
 def telegram_recieve(): #this is to receive data from the telegam end
     global update_id
     timeout=100
-    url=f'https://api.telegram.org/bot1644992322:AAEyVpjqwDRY46RniG9degjeoEn5H45y_8Y/getupdates?offset={update_id}&timeout={timeout}'
+    url=f'https://api.telegram.org/bot1644992gjeoEn5H45y_8Y/getupdates?offset={update_id}&timeout={timeout}'
     recieved_msg=requests.get(url)
     if recieved_msg.status_code==200:
         data=recieved_msg.json()['result']
