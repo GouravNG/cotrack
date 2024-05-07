@@ -1,6 +1,14 @@
 import requests  # for the url request
 import datetime
-update_id=25538713 #main update id (remove from comment if not going to run from server)
+update_id=25538765 #main update id (remove from comment if not going to run from server)
+
+def dateadder(begin_date):
+    begin_date_td=datetime.datetime.strptime(begin_date,"%d-%m-%Y")
+    enddate=str(begin_date_td+datetime.timedelta(days=1))
+    year=enddate[:4]
+    month=enddate[4:8]
+    day=enddate[8:10]
+    return (day+month+year)
 
 def telegram_send(reply_msg,chat_id):
     url=f'https://api.telegram.org/bot<token>/sendMessage?text="{reply_msg}"&chat_id={chat_id}'
@@ -31,15 +39,14 @@ def data_fetcher(pincode, t_date, n_date, nn_date,chat_id): #this function fetch
 def date_converter(unix_tf): # this function convert the unix time format to normal date format
     timestamp = datetime.date.fromtimestamp(unix_tf)
     date = (timestamp.strftime('%d-%m-%Y'))
-    t_date = date
-    n_date = str(int(date[0:2]) + 1) + t_date[2:]
-    nn_date = str(int(date[0:2]) + 2) + t_date[2:]
-    return t_date,n_date,nn_date
+    n_date=dateadder(date)
+    nn_date=dateadder(n_date)
+    return date,n_date,nn_date
 
 def telegram_recieve(): #this is to receive data from the telegam end
     global update_id
     timeout=100
-    url=f'https://api.telegram.org/bot1644992gjeoEn5H45y_8Y/getupdates?offset={update_id}&timeout={timeout}'
+    url=f'https://api.telegram.org/bot<token>/getupdates?offset={update_id}&timeout={timeout}'
     recieved_msg=requests.get(url)
     if recieved_msg.status_code==200:
         data=recieved_msg.json()['result']
